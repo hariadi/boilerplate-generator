@@ -13,6 +13,7 @@ var program = require('commander')
   , exists = fs.existsSync;
 
 var boilerplates = ['site', 'h5bp', 'sitemap', 'bootstrap'];
+var readable = [boilerplates.slice(0, -1).join(', '), boilerplates.slice(-1)[0]].join(' or ');
 
 // usage
 
@@ -23,24 +24,24 @@ program
   .option('-d, --directory <path>',  'Destination of generated boilerplate <path>');
 
 // custom help
-/*
+
 program.on('--help', function(){
   console.log('  Examples:');
   console.log('');
-  console.log('    Install "boilerplate-site" to cwd');
+  console.log('    \033[90mInstall \033[0m\033[36mboilerplate-site\033[90m to \033[0m\033[36mcwd\033[90m (default)\033[0m');
   console.log('');
   console.log('    $ assemble');
   console.log('');
-  console.log('    Install "boilerplate-site" to "myapp" directory');
+  console.log('    \033[90mInstall \033[0m\033[36mboilerplate-site\033[90m to \033[0m\033[36mmyapp \033[90mdirectory\033[0m');
   console.log('');
-  console.log('    $ assemble -d myapp');
+  console.log('    $ assemble myapp');
   console.log('');
-  console.log('    Install "boilerplate-h5bp" to "myapp" directory');
+  console.log('    \033[90mInstall \033[0m\033[36mboilerplate-h5bp\033[90m to \033[0m\033[36mmyapp \033[90mdirectory\033[0m');
   console.log('');
   console.log('    $ assemble -b h5bp -d myapp');
   console.log('');
 });
-*/
+
 // parse argv
 
 program.parse(process.argv);
@@ -49,11 +50,22 @@ program.parse(process.argv);
 
 var args = process.argv.slice(3);
 
+// Not exist
+if(boilerplates.indexOf(program.boilerplate) === -1) {
+  console.log('\n \033[90mPlease choose either:\033[0m \033[36m%s\033[0m\n', readable);
+  process.exit(0);
+}
+// Coming soon
+if(program.boilerplate !== 'site') {
+  console.log('\n \033[0m \033[36mNot implemen yet, Coming soon!\033[0m\n');
+  process.exit(0);
+}
+
 /**
  * Destination path.
  */
 
-var dest = program.args[0] || process.cwd();
+var destination = program.args[0] || process.cwd();
 
 /**
  * Boilerplates directory.
@@ -68,28 +80,28 @@ var boilerplate = __dirname + '/../boilerplates/' + (program.boilerplate || boil
  * @ref https://github.com/assemble/boilerplates
  */
 
-function Boilerplate(name) {
-  this.name = name;
-  this.path = name;
+function Boilerplate(boilerpath) {
+  this.path = boilerpath;
   this.contentPath = this.path + '/content';
+  console.log(this);
   this.mod = require(this.path);
   this.values = {};
   this.directories = {};
 }
 
 /**
- * Initialize boilerplate at `dest`.
+ * Initialize boilerplate at `destination`.
  *
- * @param {String} dest
+ * @param {String} destination
  */
 
-Boilerplate.prototype.init = function(pDest){
+Boilerplate.prototype.init = function(dest){
   var self = this
     , vars = this.mod.variables;
 
   console.log();
   program.prompt(vars, function(obj){
-    self.dest = pDest + '/' + obj.project;
+    self.destination = dest + '/' + obj.project;
     self.values = obj;
     process.stdin.destroy();
     self.create();
@@ -127,10 +139,10 @@ Boilerplate.prototype.__defineGetter__('files', function(){
 Boilerplate.prototype.create = function(){
   var self = this;
   console.log();
-  // dest
+  // destination
 
   try {
-    fs.mkdirSync(self.dest, 0775);
+    fs.mkdirSync(self.destination, 0775);
   } catch (err) {
     // ignore
   }
@@ -138,7 +150,7 @@ Boilerplate.prototype.create = function(){
   this.files.forEach(function(file){
     if (~file.indexOf('.DS_Store')) { return; }
     var path = self.parse(file)
-      , out = join(self.dest, path.replace(self.contentPath, ''));
+      , out = join(self.destination, path.replace(self.contentPath, ''));
 
     // directory
     if (self.directories[file]) {
@@ -177,4 +189,4 @@ Boilerplate.prototype.parse = function(str){
 
 var tmpl = new Boilerplate(boilerplate);
 
-tmpl.init(dest);
+tmpl.init(destination);
