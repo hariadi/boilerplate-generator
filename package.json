@@ -1,10 +1,10 @@
 {
-  "name": "assemble-cli",
-  "description": "Assemble boilerplate generator",
-  "version": "0.0.0",
+  "name": "boilerplate-generator",
+  "description": "Boilerplate generator",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git://github.com/hariadi/assemble-cli.git"
+    "url": "git://github.com/hariadi/boilerplate-generator.git"
   },
   "author": {
     "name": "Hariadi Hinta",
