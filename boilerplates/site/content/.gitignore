@@ -10,6 +10,7 @@ lib-cov
 pids
 logs
 results
-node_modules
+
 npm-debug.log
-*.sublime*
+node_modules
+_gh-pages
