@@ -6,20 +6,15 @@ var program = require('commander')
   , fs = require('fs')
   , join = path.join
   , pkg = require('./package.json')
-  , version = pkg.version
-  , exists = fs.existsSync;
+  , version = pkg.version;
 
 var boilerplates = ['site', 'h5bp', 'sitemap', 'bootstrap'];
 var readable = [boilerplates.slice(0, -1).join(', '), boilerplates.slice(-1)[0]].join(' or ');
 
 colors.setTheme({
   input: 'grey',
-  verbose: 'cyan',
   info: 'green',
-  help: 'cyan',
-  warn: 'yellow',
-  debug: 'blue',
-  error: 'red'
+  warn: 'yellow'
 });
 
 module.exports = function (argv) {
