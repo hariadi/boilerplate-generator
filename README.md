@@ -5,7 +5,7 @@ Assemble's command line interface
 Installation
 ============
 ```shell
-$ npm install -g search
+$ npm install -g boilerplate-generator
 ```
 
 Usage
