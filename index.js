@@ -20,21 +20,16 @@ colors.setTheme({
 module.exports = function (argv) {
 
   // usage
-
   program
     .version(version)
     .usage('[options] <dest>')
     .option('-b, --boilerplate <name>', 'Generate assemble boilerplate <name>', 'site', boilerplates)
-    .option('-d, --directory <path>',  'Destination of generated boilerplate <path>');
+    .option('-d, --directory <path>',  'Destination of generated boilerplate <path>')
+    .option('-p, --post "Your Post Title"',  'Create new post');
 
   // custom help
-
   program.on('--help', function(){
     console.log('  Examples:');
-    console.log('');
-    console.log('    Install'.info + ' boilerplate-site'.input + ' to cwd (default)'.info);
-    console.log('');
-    console.log('    $ assemble');
     console.log('');
     console.log('    Install'.info + ' boilerplate-site'.input + ' to myapp directory'.info);
     console.log('');
@@ -47,11 +42,9 @@ module.exports = function (argv) {
   });
 
   // parse argv
-
   program.parse(process.argv);
 
   // args void of cmd
-
   var args = process.argv.slice(3);
 
   // Not exist
@@ -59,6 +52,7 @@ module.exports = function (argv) {
     console.log('\n Please choose either: %s\n'.input, readable.info);
     process.exit(0);
   }
+
   // Coming soon
   if(program.boilerplate !== 'site') {
     console.log('\n  Not implemen yet, Coming soon!'.input + '\n');
@@ -68,13 +62,11 @@ module.exports = function (argv) {
   /**
    * Destination path.
    */
-
   var destination = program.args[0] || process.cwd();
 
   /**
    * Boilerplates directory.
    */
-
   var boilerplate = './boilerplates/' + (program.boilerplate || boilerplates[0]);
 
   /**
@@ -83,7 +75,6 @@ module.exports = function (argv) {
    * @param {String} name
    * @ref https://github.com/assemble/boilerplates
    */
-
   function Boilerplate(boilerpath) {
     this.path = boilerpath;
     this.contentPath = this.path + '/content';
@@ -98,7 +89,6 @@ module.exports = function (argv) {
    *
    * @param {String} destination
    */
-
   Boilerplate.prototype.init = function(dest){
     var self = this
       , vars = this.mod.variables;
@@ -117,7 +107,6 @@ module.exports = function (argv) {
    *
    * @return {Array}
    */
-
   Boilerplate.prototype.__defineGetter__('files', function(){
     var self = this
       , files = [];
@@ -139,12 +128,10 @@ module.exports = function (argv) {
   /**
    * Create the boilerplate files.
    */
-
   Boilerplate.prototype.create = function(){
     var self = this;
     console.log();
     // destination
-
     try {
       fs.mkdirSync(self.destination, 0775);
     } catch (err) {
@@ -180,7 +167,6 @@ module.exports = function (argv) {
    * @return {String}
    * @api private
    */
-
   Boilerplate.prototype.parse = function(str){
     var self = this;
     return str
@@ -190,7 +176,6 @@ module.exports = function (argv) {
   };
 
   // create boilerplate
-
   var tmpl = new Boilerplate(boilerplate);
 
   tmpl.init(destination);
