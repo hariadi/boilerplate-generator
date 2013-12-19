@@ -24,15 +24,12 @@ module.exports = function (argv) {
     .version(version)
     .usage('[options] <dest>')
     .option('-b, --boilerplate <name>', 'Generate assemble boilerplate <name>', 'site', boilerplates)
-    .option('-d, --directory <path>',  'Destination of generated boilerplate <path>');
+    .option('-d, --directory <path>',  'Destination of generated boilerplate <path>')
+    .option('-p, --post "Your Post Title"',  'Create new post');
 
   // custom help
   program.on('--help', function(){
     console.log('  Examples:');
-    console.log('');
-    console.log('    Install'.info + ' boilerplate-site'.input + ' to cwd (default)'.info);
-    console.log('');
-    console.log('    $ assemble');
     console.log('');
     console.log('    Install'.info + ' boilerplate-site'.input + ' to myapp directory'.info);
     console.log('');
